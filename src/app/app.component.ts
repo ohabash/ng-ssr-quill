@@ -1,6 +1,8 @@
-import { AfterViewInit, Component } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { AfterViewInit, Component, Inject, PLATFORM_ID } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import Quill from 'quill';
+import Quill from 'quill'; // Add this import statement
+// import Quill from 'quill';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +11,8 @@ import Quill from 'quill';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent implements AfterViewInit{
+export class AppComponent implements AfterViewInit {
+  isBrowser: boolean;
   editor: any;
 
   ngAfterViewInit() {
@@ -38,13 +41,21 @@ export class AppComponent implements AfterViewInit{
     ];
   }
 
-  quill() {
-    this.editor = new Quill('#editor', {
-      // modules: { toolbar: '#toolbar' },
-      modules: { toolbar: this.toolbar },
-      theme: 'snow',
-      placeholder: 'test placeholder',
-    });
-    console.log(`🚀 => AppComponent => quill => this.editor:`, this.editor);
+  constructor(@Inject(PLATFORM_ID) platformId: Object) {
+    this.isBrowser = isPlatformBrowser(platformId);
+  }
+
+  async quill() {
+    if (this.isBrowser) {
+      const m = await import('quill');
+      console.log(`🚀 => AppComponent => quill => m:`, m)
+      this.editor = new m.default('#editor', {
+        // modules: { toolbar: '#toolbar' },
+        modules: { toolbar: this.toolbar },
+        theme: 'snow',
+        placeholder: "placeholder",
+      });
+      console.log(`🚀 => AppComponent => quill => this.editor:`, this.editor)
+    }
   }
 }

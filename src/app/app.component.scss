@@ -1,0 +1,21 @@
+@import 'https://cdn.quilljs.com/1.0.0/quill.snow.css';
+
+::ng-deep {
+  .ql-snow {
+    position: relative;
+
+    .ql-toolbar {
+      position: sticky;
+      top: 5em;
+    }
+
+    button {
+      width: inherit !important;
+      height: 24px !important;
+    }
+
+    .ql-editor {
+      border: 4px solid #EFEFEF;
+    }
+  }
+}
